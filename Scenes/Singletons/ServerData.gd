@@ -1,6 +1,12 @@
 extends Node
 
+
 var game_data
+var player_stats = {
+	"max_health": 100,
+	"health": 100
+}
+
 
 func _ready():
 	var game_data_file = File.new()
