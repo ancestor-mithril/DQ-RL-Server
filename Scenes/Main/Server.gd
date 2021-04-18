@@ -10,6 +10,9 @@ onready var Gamestate = get_node("Gamestate")
 onready var GameDataRetriever = get_node("GameDataRetriever")
 
 
+var player_state_collection = {}
+
+
 func _ready():
 	StartServer()
 
@@ -34,14 +37,15 @@ func _Peer_Disconnected(player_id):
 	if has_node(str(player_id)):
 		get_node(str(player_id)).queue_free()
 		rpc_id(0, "DespawnPlayer", player_id)
+		player_state_collection.erase(player_id)
 	print("User " + str(player_id) + " Disconnected")
 
 
-remote func FetchGameData(data_name, requester):
+remote func FetchGameData(requester):
 	var player_id = get_tree().get_rpc_sender_id()
-	var data = GameDataRetriever.FetchGameData(data_name)
-	print("sending " + str(data_name) + " : " + str(data) + " to player " + str(player_id)) 
-	rpc_id(player_id, "ReturnGameData", data_name, data, requester)
+	var data = GameDataRetriever.FetchGameData()
+	print("sending " + str(data) + " to player " + str(player_id)) 
+	rpc_id(player_id, "ReturnGameData", data, requester)
 
 
 remote func JoinRequest(username):
@@ -74,5 +78,22 @@ remote func FetchPlayerStats():
 		return 1  # Error?
 	var player_stats = player.player_stats
 	rpc_id(player_id, "ReturnPlayerStats", player_stats)
+
+
+remote func SignalGameStart():
+	rpc_id(0, "ReturnGameStart")
+
+
+remote func ReceivePlayerState(player_state):
+	var player_id = get_tree().get_rpc_sender_id()
+	if player_state_collection.has(player_id):
+		if player_state_collection[player_id]["T"] < player_state["T"]:
+			player_state_collection[player_id] = player_state
+	else:
+		player_state_collection[player_id] = player_state
+
+
+func SendWorldState(world_state):
+	rpc_unreliable_id(0, "ReceiveWorldState", world_state)
 
 
