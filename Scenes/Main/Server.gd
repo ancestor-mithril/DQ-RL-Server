@@ -21,7 +21,6 @@ func StartServer():
 	network.create_server(port, max_players)
 	get_tree().set_network_peer(network)
 	print("Server started")
-	
 	network.connect("peer_connected", self, "_Peer_Connected")
 	network.connect("peer_disconnected", self, "_Peer_Disconnected")
 	
@@ -49,6 +48,7 @@ remote func FetchGameData(requester):
 
 
 remote func JoinRequest(username):
+	print("Join request from " + str(username))
 	var player_id = get_tree().get_rpc_sender_id()
 	var result = Gamestate.RegisterPlayer(player_id, username)
 	rpc_id(player_id, "ReturnJoinRequest", result)
@@ -80,8 +80,10 @@ remote func FetchPlayerStats():
 	rpc_id(player_id, "ReturnPlayerStats", player_stats)
 
 
-remote func SignalGameStart():
-	rpc_id(0, "ReturnGameStart")
+remote func SignalGameStart(spawn_positions):
+	print("Signaling game start")
+	var s_spawn_positions = Gamestate.GetPlayerSpawnPosition(spawn_positions)
+	rpc_id(0, "ReturnGameStart", s_spawn_positions)
 
 
 remote func ReceivePlayerState(player_state):
