@@ -16,7 +16,6 @@ func RegisterPlayer(id, name):
 
 func UnregisterPlayer(id):
 	players.erase(id)
-	get_node("../" + str(id)).queue_free()
 
 
 func FetchPlayerList():

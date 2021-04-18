@@ -26,10 +26,14 @@ func StartServer():
 func _Peer_Connected(player_id):
 	print("User " + str(player_id) + " Connected")
 	player_verification_process.start(player_id)
+	rpc_id(0, "SpawnNewPlayer", player_id, Vector2(26, 425))
 
 
 func _Peer_Disconnected(player_id):
 	Gamestate.UnregisterPlayer(player_id)
+	if has_node(str(player_id)):
+		get_node(str(player_id)).queue_free()
+		rpc_id(0, "DespawnPlayer", player_id)
 	print("User " + str(player_id) + " Disconnected")
 
 
@@ -57,7 +61,9 @@ func SignalPlayerListRefresh():
 	print("Notifying other players of new player connection")
 	var players = Gamestate.FetchPlayerList()
 	var player_ids = Gamestate.FetchPlayerIds()
-	for player_id in Gamestate.FetchPlayerIds():
+#	var connected_peers = Array(get_tree().get_network_connected_peers())
+#	Error could be if player_id not in connected_peers.keys()
+	for player_id in player_ids:
 		rpc_id(player_id, "SignalPlayerListRefresh", players)
 
 
@@ -65,7 +71,7 @@ remote func FetchPlayerStats():
 	var player_id = get_tree().get_rpc_sender_id()
 	var player = get_node(str(player_id))
 	if player == null:
-		pass  # Error?
+		return 1  # Error?
 	var player_stats = player.player_stats
 	rpc_id(player_id, "ReturnPlayerStats", player_stats)
 
