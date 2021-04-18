@@ -8,6 +8,36 @@ var player_stats = {
 	"max_health": 100,
 	"health": 100
 }
+var spawn_position = {
+	"0": [
+		Vector2(-17, 434), 
+		Vector2(1, 434),
+		Vector2(22, 434),
+		Vector2(45, 434)
+	],
+	"1": [
+		Vector2(40, 369), 
+		Vector2(60, 369), 
+		Vector2(80, 369), 
+		Vector2(100, 369), 
+	],
+	"2": [
+		Vector2(-25, 687), 
+		Vector2(-10, 687), 
+		Vector2(5, 687), 
+		Vector2(20, 687), 
+	],
+	"3": [
+		Vector2(40, 369), 
+		Vector2(60, 369), 
+		Vector2(80, 369), 
+		Vector2(100, 369), 
+	]
+}
+
+
+func GetPlayerSpawnPosition(level):
+	return spawn_position[str(level)]
 
 
 func _ready():

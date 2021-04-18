@@ -80,9 +80,9 @@ remote func FetchPlayerStats():
 	rpc_id(player_id, "ReturnPlayerStats", player_stats)
 
 
-remote func SignalGameStart(spawn_positions):
+remote func SignalGameStart(level):
 	print("Signaling game start")
-	var s_spawn_positions = Gamestate.GetPlayerSpawnPosition(spawn_positions)
+	var s_spawn_positions = Gamestate.GetPlayerSpawnPosition(str(level))
 	rpc_id(0, "ReturnGameStart", s_spawn_positions)
 
 

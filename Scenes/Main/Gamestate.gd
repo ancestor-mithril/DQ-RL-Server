@@ -28,7 +28,8 @@ func FetchPlayerIds():
 	print("Fetching player ids")
 	return players.keys()
 
-func GetPlayerSpawnPosition(spawn_positions):
+func GetPlayerSpawnPosition(level):
+	var spawn_positions = ServerData.GetPlayerSpawnPosition(level)
 	var player_data = {}
 	var i = 0
 	for player_id in players.keys():
