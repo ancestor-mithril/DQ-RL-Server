@@ -74,28 +74,28 @@ var mob_position = {
 	"0": [
 		{
 			"type": "Mob",
-			"pos": Vector2(704, 279),
+			"pos": Vector2(660, 260),
 			"stats": mob_stats["Mob"],
 			"follow": false
 		},
 		{
 			"type": "Mob",
-			"pos": Vector2(1148, 572),
+			"pos": Vector2(1148, 552),
 			"stats": mob_stats["Mob"]
 		},
 		{
 			"type": "Mob",
-			"pos": Vector2(1764, 637),
+			"pos": Vector2(1764, 610),
 			"stats": mob_stats["Mob"]
 		},
 		{
 			"type": "Mob",
-			"pos": Vector2(1890, 705),
+			"pos": Vector2(1890, 680),
 			"stats": mob_stats["Mob"]
 		},
 		{
 			"type": "MobProjectile",
-			"pos": Vector2(2106, 625),
+			"pos": Vector2(2106, 600),
 			"stats": mob_stats["MobProjectile"]
 		}
 	]
